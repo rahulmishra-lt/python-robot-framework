@@ -5,7 +5,7 @@ Library    LambdaTestStatus.py
 *** Variables ***
 
 ${BROWSER}          ${ROBOT_BROWSER}
-${REMOTE_URL}       https://%{LT_USERNAME}:%{LT_ACCESS_KEY}@stage-hub.lambdatestinternal.com/wd/hub
+${REMOTE_URL}       https://%{LT_USERNAME}:%{LT_ACCESS_KEY}@hub.lambdatest.com/wd/hub
 ${TIMEOUT}          3000
 ${AUTOHEAL_URL}     https://www.lambdatest.com/selenium-playground/auto-healing
 
@@ -18,17 +18,6 @@ ${AUTOHEAL_URL}     https://www.lambdatest.com/selenium-playground/auto-healing
 ...    network=${True}
 ...    console=${True}
 ...    autoHeal=${True}
-...    name=RobotFramework AutoHeal Demo
-
-# LambdaTest Capabilities with AutoHeal disabled
-&{LT_OPTIONS_AUTOHEAL_FALSE}
-...    browserName=${browserName}
-...    platformName=${platform}
-...    browserVersion=${version}
-...    visual=${True}
-...    network=${True}
-...    console=${True}
-...    autoHeal=${False}
 ...    name=RobotFramework AutoHeal Demo
 
 *** Keywords ***
@@ -45,24 +34,6 @@ Open AutoHeal Browser With AutoHeal Enabled
     ...    network=${True}
     ...    console=${True}
     ...    autoHeal=${True}
-    ...    build=Demonstration of the AutoHeal - Robot Framework
-    ...    name=${test_name}
-    Call Method    ${options}    set_capability    LT:Options    ${lt_options}
-    Open Browser    ${AUTOHEAL_URL}    ${BROWSER}    remote_url=${REMOTE_URL}    options=${options}
-    Sleep    5s    Wait for page to fully load
-
-Open AutoHeal Browser With AutoHeal Disabled
-    [Arguments]    ${test_name}=RobotFramework AutoHeal Demo
-    [Timeout]    ${TIMEOUT}
-    ${options}=    Evaluate    sys.modules['selenium.webdriver'].${BROWSER.capitalize()}Options()    sys, selenium.webdriver
-    ${lt_options}=    Create Dictionary    
-    ...    browserName=${browserName}
-    ...    platformName=${platform}
-    ...    browserVersion=${version}
-    ...    visual=${True}
-    ...    network=${True}
-    ...    console=${True}
-    ...    autoHeal=${False}
     ...    build=Demonstration of the AutoHeal - Robot Framework
     ...    name=${test_name}
     Call Method    ${options}    set_capability    LT:Options    ${lt_options}

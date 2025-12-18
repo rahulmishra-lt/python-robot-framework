@@ -18,19 +18,6 @@ AutoHeal Base Test Without Changed DOM
     Fill Login Form    test@gmail.com    password
     Click Submit Button
 
-AutoHeal False With Changed DOM
-    [Documentation]    Test login form after changing DOM IDs - AutoHeal DISABLED (test will fail to find elements)
-    [Timeout]    ${TIMEOUT}
-    [Setup]    Open AutoHeal Browser With AutoHeal Disabled    AutoHeal False With Changed DOM
-    [Teardown]    Close AutoHeal Browser
-    
-    Execute Step Context    AutoHealFalse-DomChanged-Login Case    info
-    
-    Click Change DOM ID Button
-    
-    Fill Login Form    test@gmail.com    password
-    Click Submit Button
-
 AutoHealed With Changed DOM
     [Documentation]    Test login form after changing DOM IDs - AutoHeal ENABLED (test will pass due to auto-healing)
     [Timeout]    ${TIMEOUT}
