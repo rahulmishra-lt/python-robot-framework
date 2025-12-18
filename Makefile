@@ -13,3 +13,7 @@ test_OX_X_10_11_firefox:
 test_Windows_10_chrome:
 	robot --variable platform:"Windows 10" --variable browserName:chrome --variable version:latest --variable ROBOT_BROWSER:chrome --variable visual:false --variable network:false --variable console:false --log NONE --report NONE --output NONE Tests/sample_test.robot
 
+
+# AutoHeal Tests
+autoheal_test_chrome:
+	robot --variable platform:"Windows 10" --variable browserName:chrome --variable version:latest --variable ROBOT_BROWSER:chrome Tests/autoheal_test.robot
