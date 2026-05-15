@@ -1,225 +1,139 @@
-# Robot Selenium tutorial
+# Run Robot Framework Tests on TestMu AI (Formerly LambdaTest)
 
-![LambdaTest Logo](https://www.lambdatest.com/resources/images/logos/logo.svg)
+<p align="center">
+  <a href="https://www.testmuai.com/"><img src="https://img.shields.io/badge/MADE%20BY%20TestMu%20AI-000000.svg?style=for-the-badge&labelColor=000" alt="Made by TestMu AI"></a>
+  <a href="https://pypi.org/project/robotframework/"><img src="https://img.shields.io/pypi/v/robotframework.svg?style=for-the-badge&labelColor=000000" alt="PyPI version"></a>
+  <a href="https://community.testmuai.com/"><img src="https://img.shields.io/badge/Join%20the%20community-blueviolet.svg?style=for-the-badge&labelColor=000000" alt="Community"></a>
+</p>
 
-![altext](https://github.com/LambdaTest/Robot-Selenium-Sample/blob/master/tutorial-images/logo.PNG)
+## Getting Started
 
-Robot Framework is a generic open source automation framework. It can be used for test automation and robotic process automation (RPA).
+[TestMu AI](https://www.testmuai.com/) (Formerly LambdaTest) is the world's first full-stack AI Agentic Quality Engineering platform that empowers teams to test intelligently, smarter, and ship faster. Built for scale, it offers a full-stack testing cloud with 10K+ real devices and 3,000+ browsers. With AI-native test management, MCP servers, and agent-based automation, TestMu AI supports Selenium, Appium, Playwright, and all major frameworks. 
 
-## Prerequisites for Robot Selenium tutorial
+With TestMu AI (Formerly LambdaTest), you can run Robot Framework tests with Selenium across real browsers and operating systems at scale, enabling parallel execution across a wide range of browser and OS combinations.
 
-- Install the latest Python build from the [official website](https://www.python.org/downloads/). We recommend using the latest version.
-- Make sure **pip** is installed in your system. You can install **pip** from [here](https://pip.pypa.io/en/stable/installation/).
-- Download the latest **Selenium Client** and its **WebDriver bindings** from the [official website](https://www.selenium.dev/downloads/). Latest versions of **Selenium Client** and **WebDriver** are ideal for running your automation script on LambdaTest Selenium cloud grid.
-- Install **virtualenv** which is the recommended way to run your tests. It will isolate the build from other setups you may have running and ensure that the tests run with the specified versions of the modules.
+- [Sign up on TestMu AI](https://www.testmuai.com/register/) (Formerly LambdaTest).
+- Follow the [TestMu AI Documentation](https://www.testmuai.com/support/docs/) for the full setup walkthrough.
 
-```bash
-pip install virtualenv
-```
+### Prerequisites
 
-### Installing Selenium Dependencies And Tutorial Repo
+- Python 3.8 or higher
+- pip
+- virtualenv (recommended)
+- A TestMu AI (Formerly LambdaTest) account with your username and access key
 
-**Step 1:** Clone the LambdaTest’s python-robot-framework repository and navigate to the code directory as shown below:
+### Setup
 
-```bash
-git clone https://github.com/LambdaTest/python-robot-framework
-cd python-robot-framework
-```
-
-**Step 2:** Create a virtual environment in your project folder the environment name is arbitrary.
+Clone and install dependencies:
 
 ```bash
+git clone https://github.com/LambdaTest/python-robot-framework && cd python-robot-framework
 virtualenv venv
-```
-
-**Step 3:** Activate the environment.
-
-```bash
 source venv/bin/activate
-```
-
-**Step 4:** Install the [required packages](https://github.com/LambdaTest/python-robot-framework/blob/master/requirements.txt) from the cloned project directory:
-
-```bash
 pip install -r requirements.txt
 ```
 
-### Setting Up Your Authentication
+Set your credentials as environment variables.
 
-Make sure you have your LambdaTest credentials with you to run test automation scripts. You can get these credentials from the [LambdaTest Automation Dashboard](https://automation.lambdatest.com/build/?utm_source=github&utm_medium=repo&utm_campaign=pytest-selenium-sample) or by your [LambdaTest Profile](https://accounts.lambdatest.com/login/?utm_source=github&utm_medium=repo&utm_campaign=pytest-selenium-sample).
+**macOS / Linux:**
 
-**Step 5:** Set LambdaTest **Username** and **Access Key** in environment variables.
-
-- For **Linux/macOS**:
-
-  ```bash
-  export LT_USERNAME="YOUR_USERNAME"
-  export LT_ACCESS_KEY="YOUR ACCESS KEY"
-  ```
-
-  - For **Windows**:
-
-  ```bash
-  set LT_USERNAME="YOUR_USERNAME"
-  set LT_ACCESS_KEY="YOUR ACCESS KEY"
-  ```
-
-## Getting Started With Robot & LambdaTest
-
-Let’ start with a simple Selenium Remote Webdriver test first. The Robot script below tests a simple to-do application with basic functionalities like mark items as done, add items in list, calculate total pending items etc.
-
-Feature: Test to add item Scenario: Test sample-todo-app Given I go to sample-todo-app to add item Then I Click on first checkbox and second checkbox When I enter item to add When I click add button Then I should verify the added item
-
-Now here is the sample test file which is to be executed for the automation test through LambdaTest
-
-```
-*** Settings ***
-
-Resource  ../Resources/Common.robot
-
-Test Setup  Common.Open test browser
-Test Teardown  Common.Close test browser
-
-*** Variables ***
-
-*** Test Cases ***
-
-Example of connecting to Lambdatest via Robot Framework
-	[Timeout]   ${TIMEOUT}
-	Page should contain element  name:li1
-	Page should contain element  name:li2
-
-	Click button  name:li1
-	Click button  name:li2
-
-	Input text  id:sampletodotext  Yey Let's add it to list
-	Click button  id:addbutton
-	${response}    Get Text    xpath=/html/body/div/div/div/ul/li[6]/span
-	Should Be Equal As Strings    ${response}    Yey Let's add it to list
+```bash
+export LT_USERNAME="YOUR_USERNAME"
+export LT_ACCESS_KEY="YOUR_ACCESS_KEY"
 ```
 
-Here is common.robot file to setup mandatory details to run at LambdaTest.
-You would need to your LambdaTest authentication credentials(Access key & Username). You need to update these credentials in the /Resources/Common.robot file.
+**Windows:**
 
-```
-*** Settings ***
-Library  Selenium2Library
-Library  LambdaTestStatus.py
-
-*** Variables ***
-
-@{_tmp}
-    ...  browserName: ${browserName},
-    ...  platform: ${platform},
-    ...  version: ${version},
-    ...  visual: ${visual},
-    ...  network: ${network},
-    ...  console: ${console},
-    ...  name: RobotFramework Lambda Test
-
-${BROWSER}          ${ROBOT_BROWSER}
-${CAPABILITIES}     ${EMPTY.join(${_tmp})}
-${REMOTE_URL}       http://%{LT_USERNAME}:%{LT_ACCESS_KEY}@hub.lambdatest.com/wd/hub //Please specify your lambdatest username and access key here
-${TIMEOUT}          3000
-
-*** Keywords ***
-
-Open test browser
-    [Timeout]   ${TIMEOUT}
-    Open browser  https://lambdatest.github.io/sample-todo-app/  browser=${BROWSER}
-    ...  remote_url=${REMOTE_URL}
-    ...  desired_capabilities=${CAPABILITIES}
-
-Close test browser
-    Run keyword if  '${REMOTE_URL}' != ''
-    ...  Report Lambdatest Status
-    ...  ${TEST_NAME}
-    ...  ${TEST_STATUS}
-    Close all browsers
+```bash
+set LT_USERNAME="YOUR_USERNAME"
+set LT_ACCESS_KEY="YOUR_ACCESS_KEY"
 ```
 
-### Execute The Test
+Update your LambdaTest authentication credentials in `/Resources/Common.robot`.
 
-You would need to execute the below command in your terminal/cmd.
+### Run tests
 
-```
+Run a single test:
+
+```bash
 make test_Windows_10_chrome
 ```
 
-![rfst](https://github.com/LambdaTest/Robot-Selenium-Sample/blob/master/tutorial-images/rfst.PNG)
+Run all tests in parallel across browsers:
 
-## Parallel testing with Robot
-
-You can configure your parallel tests capabilites at `Makefile`:
-
-```
-run_all_in_parallel:
-	make -j test_Windows_10_edge test_OX_X_10_11_firefox test_Windows_10_chrome
-
-test_Windows_10_edge:
-	robot  --variable platform:"Windows 10" --variable browserName:MicrosoftEdge --variable version:latest --variable ROBOT_BROWSER:chrome --variable visual:false --variable network:false --variable console:false Tests/sample_test.robot
-
-test_OX_X_10_11_firefox:
-	robot --variable platform:"macOS Sierra" --variable browserName:firefox --variable version:latest --variable ROBOT_BROWSER:firefox --variable visual:false --variable network:false --variable console:false Tests/sample_test.robot
-
-test_Windows_10_chrome:
-	robot --variable platform:"Windows 10" --variable browserName:chrome --variable version:latest --variable ROBOT_BROWSER:chrome --variable visual:false --variable network:false --variable console:false Tests/sample_test.robot
-
-```
-
-To perform parallel testing on LambdaTest Selenium grid use the below command:
-
-```
+```bash
 make run_all_in_parallel
 ```
 
-![rfpt](https://github.com/LambdaTest/Robot-Selenium-Sample/blob/master/tutorial-images/rfpt.PNG)
+View results on your TestMu AI dashboard.
 
-Below we see a screenshot that depicts our Robot code is running over different browsers i.e Chrome, Firefox and Safari on the LambdaTest Selenium Grid Platform. The results of the test script execution along with the logs can be accessed from the LambdaTest Automation dashboard.
+### Local testing with TestMu AI Tunnel
 
-![rfsample](https://github.com/LambdaTest/Robot-Selenium-Sample/blob/master/tutorial-images/rfsample.PNG)
+To test locally hosted apps, set up the TestMu AI tunnel. OS-specific guides:
 
-## Testing Locally Hosted or Privately Hosted Projects
+- [Local Testing on Windows](https://www.testmuai.com/support/docs/local-testing-for-windows/)
+- [Local Testing on macOS](https://www.testmuai.com/support/docs/local-testing-for-macos/)
+- [Local Testing on Linux](https://www.testmuai.com/support/docs/local-testing-for-linux/)
 
-To help you perform cross browser testing of your locally stored web pages, LambdaTest provides an SSH(Secure Shell) tunnel connection with the name Lambda Tunnel. With Lambda Tunnel, you can test your locally hosted files before you make them live over the internet. You could even perform cross browser testing from different IP addresses belonging to various geographic locations. You can also use LambdaTest Tunnel to test web-apps and websites that are permissible inside your corporate firewall.
+Add the following to your capabilities:
 
-- Set tunnel value to True in test capabilities
-  > OS specific instructions to download and setup tunnel binary can be found at the following links.
-  >
-  > - [Windows](https://www.lambdatest.com/support/docs/display/TD/Local+Testing+For+Windows)
-  > - [Mac](https://www.lambdatest.com/support/docs/display/TD/Local+Testing+For+MacOS)
-  > - [Linux](https://www.lambdatest.com/support/docs/display/TD/Local+Testing+For+Linux)
-
-After setting tunnel you can also see the active tunnel in our LambdaTest dashboard:
-
-![tunnel active](https://github.com/LambdaTest/Robot-Selenium-Sample/blob/master/tutorial-images/tn.PNG)
-
-### Resources
-
-##### [Selenium Documentation](http://www.seleniumhq.org/docs/)
-
-##### [Python Documentation](https://docs.python.org/2.7/)
-
-## Autoheal test run
-
-**Step 1:** Set LambdaTest **Username** and **Access Key** in environment variables.
-
-- For **Linux/macOS**:
-
-  ```bash
-  export LT_USERNAME="YOUR_USERNAME"
-  export LT_ACCESS_KEY="YOUR ACCESS KEY"
-  ```
-
-- For **Windows**:
-
-  ```bash
-  set LT_USERNAME="YOUR_USERNAME"
-  set LT_ACCESS_KEY="YOUR ACCESS KEY"
-  ```
-
-**Step 2:** Run make file command.
-
-```bash
-make autoheal_test_chrome
+```js
+tunnel: true,
 ```
+
+### Avoid timeouts with `pseudoActivityInterval`
+
+TestMu AI aborts test sessions if the machine is held idle for 90+ seconds. To keep sessions alive, send a heartbeat:
+
+```js
+customLaunchers: {
+  chrome: {
+    pseudoActivityInterval: 5000 // 5s heartbeat
+  }
+}
+```
+
+The default is `0` (disabled). Set any value above `0` to enable.
+
+## Contributions
+
+Contributions are welcome. Open an issue to discuss your idea before submitting a pull request. When reporting bugs, include your Python version, OS, and pip version.
+
+## TestMu AI (Formerly LambdaTest) Community
+
+Connect with testers and developers in the [TestMu AI Community](https://community.testmuai.com/). Ask questions, share what you are building, and discuss best practices in test automation and DevOps.
+  
+## TestMu AI (Formerly LambdaTest) Certifications
+
+Earn free [TestMu AI Certifications](https://www.testmuai.com/certifications/) for testers, developers, and QA engineers. Validate your skills in Selenium, Cypress, Playwright, Appium, Espresso and more. Industry-recognized, shareable on LinkedIn, and built by practitioners, not marketers.
+
+## Learning Resources by TestMu AI (Formerly LambdaTest)
+
+Learn modern testing through tutorials, guides, videos, and weekly updates:
+
+* [TestMu AI Blog](https://www.testmuai.com/blog/)
+* [TestMu AI Learning Hub](https://www.testmuai.com/learning-hub/)
+* [TestMu AI on YouTube](https://www.youtube.com/@TestMuAI)
+* [TestMu AI Newsletter](https://www.testmuai.com/newsletter/)
+  
+## LambdaTest is Now TestMu AI
+
+On **January 12, 2026**, [LambdaTest evolved to TestMu AI](https://www.testmuai.com/lambdatest-is-now-testmuai/), the world's first fully autonomous **Agentic AI Quality Engineering Platform**.
+
+Same team. Same infrastructure. Same customer accounts. All existing LambdaTest logins, scripts, capabilities, and integrations continue to work without change.
+
+🏠 Find the new home for [LambdaTest](https://www.testmuai.com).
+
+### How LambdaTest Evolved into TestMu AI
+
+In 2017, we launched LambdaTest with a simple mission: make testing fast, reliable, and accessible. As LambdaTest grew, we expanded into Test Intelligence, Visual Regression Testing, Accessibility Testing, API Testing, and Performance Testing, covering the full depth of the testing lifecycle.
+
+As software development entered the AI era, testing had to evolve, too. We rebuilt the architecture to be AI-native from the ground up, with autonomous agents that **plan, author, execute, analyze, and optimize tests** while keeping humans in the loop. The platform integrates with your repos, CI, IDEs, and terminals, continuously learning from every code change and development signal.
+
+That evolution earned a new name: **TestMu AI**, built for an AI-first future of quality engineering. TestMu is not a new name for us. It is the name of our annual community conference, which has brought together 100,000+ quality engineers to discuss how AI would reshape testing, long before that became an industry norm. 
+
+What started as a high-performance cloud testing platform has transformed into an AI-native, multi-agent system powering a connected, end-to-end quality layer. That evolution defined a new identity: LambdaTest evolved into TestMu AI, built for an AI-first future of quality engineering.
+
+## Support
+
+Got a question? Email [support@testmuai.com](mailto:support@testmuai.com) or chat with us 24x7 from our chat portal.
